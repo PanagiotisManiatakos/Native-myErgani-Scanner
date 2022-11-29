@@ -1,12 +1,26 @@
 {
   "expo": {
-    "name": "blank",
-    "slug": "blank",
+    "name": "D1 myErgani Reader",
+    "slug": "myErganiReader",
     "version": "1.0.0",
     "platforms": [
       "ios",
       "android",
       "web"
-    ]
+    ],
+    "plugins": [
+      "react-native-nfc-manager"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.man1attack.myErganiReader"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d794b0c1-133a-4a8c-9811-6032842bcdb8"
+      }
+    },
+    "android": {
+      "package": "com.man1attack.myErganiReader"
+    }
   }
 }
