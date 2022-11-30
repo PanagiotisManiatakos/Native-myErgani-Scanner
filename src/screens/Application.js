@@ -1,54 +1,47 @@
 import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ModalCamera from "../components/ui/ModalCamera";
 import SettingsIcon from "../components/SettingsIcon";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import NfcManager, { NfcTech } from "react-native-nfc-manager";
-
+import { ReduxContext } from "../Context";
+// import NfcManager, { NfcTech } from "react-native-nfc-manager";
 const back = require("../assets/back.svg");
 
 const Application = () => {
   const [show, setShow] = useState(false);
-  const [type, setType] = useState("QR");
-
-  useEffect(() => {
-    const getAsync = async () =>
-      await AsyncStorage.getItem("scantype")
-        .then((d) => setType(d))
-        .catch((er) => setType("QR"));
-
-    getAsync();
-  }, []);
+  const { scan } = React.useContext(ReduxContext);
 
   const handleClick = async () => {
-    if (type === "QR") {
+    if (scan === "QR") {
       setShow(true);
     } else {
-      NfcManager.start();
-      try {
-        // register for the NFC tag with NDEF in it
-        await NfcManager.requestTechnology(NfcTech.Ndef);
-        // the resolved tag object will contain `ndefMessage` property
-        const tag = await NfcManager.getTag();
-        console.warn("Tag found", tag);
-      } catch (ex) {
-        console.warn("Oops!", ex);
-      } finally {
-        // stop the nfc scanning
-        NfcManager.cancelTechnologyRequest();
-      }
+      // NfcManager.start();
+      // try {
+      //   // register for the NFC tag with NDEF in it
+      //   await NfcManager.requestTechnology(NfcTech.Ndef);
+      //   // the resolved tag object will contain `ndefMessage` property
+      //   const tag = await NfcManager.getTag();
+      //   console.warn("Tag found", tag);
+      // } catch (ex) {
+      //   console.warn("Oops!", ex);
+      // } finally {
+      //   // stop the nfc scanning
+      //   NfcManager.cancelTechnologyRequest();
+      // }
     }
   };
 
   return (
-    <View style={styles.container}>
+    <View className="flex-1 bg-gray-900">
       <ImageBackground source={back} resizeMode="cover" style={styles.imageContainer}>
         <View>
-          <Pressable style={styles.buttonIn} onPress={handleClick}>
-            <Text style={styles.textButton}>Είσοδος</Text>
+          <Pressable
+            className="focus:outline-none bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 rounded-lg px-5 py-2.5 my-5 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            onPress={handleClick}
+          >
+            <Text className="text-white text-lg font-medium">Είσοδος</Text>
           </Pressable>
-          <Pressable style={styles.buttonOut}>
-            <Text style={styles.textButton}>Έξοδος</Text>
+          <Pressable className="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 my-5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+            <Text className="text-white text-lg font-medium">Έξοδος</Text>
           </Pressable>
         </View>
       </ImageBackground>
@@ -61,37 +54,11 @@ const Application = () => {
 export default Application;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#212529",
-  },
   imageContainer: {
     height: "100%",
     width: "100%",
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  textButton: {
-    color: "white",
-    fontSize: 16,
-  },
-  buttonIn: {
-    borderRadius: 6,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    backgroundColor: "#198754",
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 20,
-  },
-  buttonOut: {
-    borderRadius: 6,
-    paddingHorizontal: 24,
-    paddingVertical: 12,
-    backgroundColor: "#dc3545",
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 20,
   },
 });

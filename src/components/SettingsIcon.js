@@ -7,7 +7,7 @@ const SettingsIcon = () => {
   const [show, setShow] = useState(false);
   return (
     <>
-      <Pressable style={styles.container} onPress={() => setShow(true)}>
+      <Pressable className="hover:scale-[1.1] p-4" style={styles.container} onPress={() => setShow(true)}>
         <FontAwesome name="gear" size={25} color="white" />
       </Pressable>
       <SettingsModal show={show} setShow={setShow} />
@@ -20,8 +20,7 @@ export default SettingsIcon;
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
-    top: 0,
-    right: 0,
-    padding: 20,
+    top: 10,
+    right: 10,
   },
 });
