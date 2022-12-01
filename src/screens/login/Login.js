@@ -1,11 +1,11 @@
 import { StyleSheet, ScrollView, KeyboardAvoidingView, Pressable, Text } from "react-native";
-import React, { useRef, useState } from "react";
-import back from "../assets/back.svg";
-import FloatingLabel from "../components/ui/FloatingLabel";
-import login from "../services/login";
-import Loader from "../components/ui/Loader";
+import React, { useEffect, useRef, useState } from "react";
+import FloatingLabel from "../../components/ui/FloatingLabel";
+import login from "../../services/login";
+import Loader from "../../components/ui/Loader";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = () => {
+const Login = ({ setAllOk, setLogin }) => {
   const [loading, setLoading] = useState(false);
 
   const [connection, setConnection] = useState("");
@@ -40,14 +40,34 @@ const Login = () => {
       username: user,
       password: pass,
     });
-    setLoading(false);
-
-    console.log(response);
+    if (response.success) {
+      AsyncStorage.setItem("login", JSON.stringify(response));
+      AsyncStorage.setItem("lastlogin", JSON.stringify({ connection, user, pass }));
+      setLogin({ username: user, password: pass, sn: response.sn, objs: response.objs, clientID: response.clientID });
+      setAllOk(true);
+      setLoading(false);
+    } else {
+      setLoading(false);
+      console.log(response);
+    }
   };
+
+  useEffect(() => {
+    const getPrevious = async () =>
+      await AsyncStorage.getItem("lastlogin").then((d) => {
+        const data = JSON.parse(d);
+        setConnection(data?.connection ?? "");
+        setUser(data?.user ?? "");
+        setPass(data?.pass ?? "");
+      });
+    // setConnection(previous?.connection ?? "");
+    // setUsername(previous?.username ?? "");
+    getPrevious();
+  }, []);
 
   return (
     <>
-      <KeyboardAvoidingView style={styles.mainBody}>
+      <KeyboardAvoidingView style={styles.viewContainer}>
         <ScrollView contentContainerStyle={{ padding: 30 }} keyboardShouldPersistTaps="handled">
           <FloatingLabel
             label="Σύνδεση"
@@ -85,7 +105,7 @@ const Login = () => {
 export default Login;
 
 const styles = StyleSheet.create({
-  mainBody: {
+  viewContainer: {
     flex: 1,
     justifyContent: "center",
     alignContent: "center",

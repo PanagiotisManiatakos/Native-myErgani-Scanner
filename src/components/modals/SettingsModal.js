@@ -21,7 +21,9 @@ const SettingsModal = ({ show, setShow }) => {
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("session").then(() => setSession(undefined));
+    await AsyncStorage.removeItem("session")
+      .then(() => setSession(undefined))
+      .catch((er) => console.log(er));
     await AsyncStorage.removeItem("login").then(() => setLogin(undefined));
   };
 
@@ -53,7 +55,7 @@ const SettingsModal = ({ show, setShow }) => {
           />
         ))}
       </View>
-      <View className="flex flex-row justify-evenly my-2 align-center">
+      <View className="flex flex-row justify-between my-2 align-center">
         <Pressable
           onPress={() => setShow(false)}
           className="bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 rounded-lg px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
@@ -67,10 +69,11 @@ const SettingsModal = ({ show, setShow }) => {
           <Text className="text-white font-medium text-sm">Αποδοχή</Text>
         </Pressable>
       </View>
-      <Pressable className="my-3" onPress={handleLogout}>
-        <View className="flex flex-row justify-evenly align-center">
-          <Text className="text-red-600 font-medium text-sm">Αποσύνδεση</Text>
-        </View>
+      <Pressable
+        className="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 my-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+        onPress={handleLogout}
+      >
+        <Text className="text-center text-white font-medium text-sm">Αποσύνδεση</Text>
       </Pressable>
     </Dialog>
   );
