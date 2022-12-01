@@ -1,4 +1,4 @@
-import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, Pressable, StyleSheet, Text, View, Button } from "react-native";
 import React, { useState } from "react";
 import ModalCamera from "../components/ui/ModalCamera";
 import SettingsIcon from "../components/SettingsIcon";
@@ -31,7 +31,7 @@ const Application = () => {
   };
 
   return (
-    <View className="flex-1 bg-gray-900">
+    <View className="flex-1">
       <ImageBackground source={back} resizeMode="cover" style={styles.imageContainer}>
         <View>
           <Pressable

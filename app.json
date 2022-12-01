@@ -4,6 +4,7 @@
     "slug": "myErganiReader",
     "version": "1.0.0",
     "platforms": ["ios", "android", "web"],
+    "icon": "./src/assets/icon.png",
     "//plugins": ["react-native-nfc-manager"],
     "ios": {
       "bundleIdentifier": "com.man1attack.myErganiReader"
@@ -15,6 +16,11 @@
     },
     "android": {
       "package": "com.man1attack.myErganiReader"
+    },
+    "splash": {
+      "image": "./src/assets/splash.png",
+      "resize": "contain",
+      "backgroundColor": "#181c24"
     }
   }
 }
