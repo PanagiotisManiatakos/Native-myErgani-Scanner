@@ -1,8 +1,7 @@
 import { TextInput, View, Animated, Pressable } from "react-native";
 import React, { Component } from "react";
 import { MaterialIcons } from "react-native-vector-icons";
-
-export default class FloatingLabel extends Component {
+class FloatingLabel extends Component {
   state = { isFocused: false };
 
   UNSAFE_componentWillMount() {
@@ -22,53 +21,79 @@ export default class FloatingLabel extends Component {
   render() {
     const { label, ...props } = this.props;
     const { isFocused } = this.state;
-    const labelStyle = {
-      position: "absolute",
-      left: 0,
+    const style = defaultStyles;
+    const animatedLabelStyle = {
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [14, 0],
+        outputRange: [20, 0],
       }),
       fontSize: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [20, 14],
+        outputRange: [15, 10],
       }),
       color: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: ["#aaa", "white"],
+        outputRange: ["#888", "#888"],
       }),
     };
 
     return (
-      <View
-        style={{
-          justifyContent: "flex-start",
-          flexDirection: "row",
-          flexWrap: "nowrap",
-          alignItems: "stretch",
-          position: "relative",
-          width: "100%",
-          borderBottomWidth: 1,
-          borderBottomColor: "#555",
-        }}
-      >
-        <View style={{ flex: 1, paddingTop: 18 }}>
-          <Animated.Text style={labelStyle}>{label}</Animated.Text>
-          <TextInput
-            style={{ height: 26, fontSize: 20 }}
-            onFocus={this.handleFocus}
-            onBlur={this.handleBlur}
-            {...props}
-          />
-        </View>
-        {this.props.value !== "" && (
-          <View style={{ alignItems: "center", justifyContent: "center" }}>
-            <Pressable>
-              <MaterialIcons name="clear" size={25} color="white" />
-            </Pressable>
-          </View>
-        )}
+      // <View
+      //   style={{
+      //     justifyContent: "flex-start",
+      //     flexDirection: "row",
+      //     flexWrap: "nowrap",
+      //     alignItems: "stretch",
+      //     position: "relative",
+      //     width: "100%",
+      //     borderBottomWidth: 1,
+      //     borderBottomColor: "#555",
+      //   }}
+      // >
+      <View style={style.container}>
+        <Animated.Text style={[style.labelStyle, animatedLabelStyle]}>{label}</Animated.Text>
+        <TextInput
+          style={style.textInput}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          ref={this.props.innerRef}
+          {...props}
+          blurOnSubmit
+          underlineColorAndroid="transparent"
+          autoCapitalize="none"
+          clearButtonMode="always"
+        />
       </View>
+      //   {this.props.value !== "" && (
+      //     <View style={{ alignItems: "center", justifyContent: "center" }}>
+      //       <Pressable>
+      //         <MaterialIcons name="clear" size={25} color="white" />
+      //       </Pressable>
+      //     </View>
+      //   )}
+      // </View>
     );
   }
 }
+
+export default React.forwardRef((props, ref) => <FloatingLabel innerRef={ref} {...props} />);
+
+const defaultStyles = {
+  container: {
+    height: 50,
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#aaa",
+    marginVertical: 10,
+  },
+  labelStyle: {
+    position: "absolute",
+    left: 0,
+  },
+  textInput: {
+    height: 20,
+    marginTop: 18,
+    fontSize: 20,
+    color: "#fff",
+  },
+};
