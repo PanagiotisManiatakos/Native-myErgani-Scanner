@@ -3,9 +3,11 @@ import React from "react";
 import { Dialog } from "@rneui/base";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Audio } from "expo-av";
+import { Ionicons } from "react-native-vector-icons";
 
 const ModalCamera = ({ show, setShow }) => {
   const [hasPermission, setHasPermission] = React.useState(null);
+  const [cameraDir, setCameraDir] = React.useState("front");
   const [scanned, setScanned] = React.useState(false);
 
   async function playSound() {
@@ -22,13 +24,28 @@ const ModalCamera = ({ show, setShow }) => {
     getBarCodeScannerPermissions();
   }, []);
 
-  React.useEffect(() => setScanned(false), [show]);
+  React.useEffect(() => {
+    show && setScanned(false);
+    show && setCameraDir("front");
+  }, [show]);
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return (
+      <Dialog style={{ flex: 1 }} isVisible={show} onBackdropPress={() => setShow(false)}>
+        <View>
+          <Text className="text-white text-center">Requesting for camera permission</Text>
+        </View>
+      </Dialog>
+    );
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return (
+      <Dialog style={{ flex: 1 }} isVisible={show} onBackdropPress={() => setShow(false)}>
+        <View>
+          <Text className="text-white text-center">No access to Camera</Text>
+        </View>
+      </Dialog>
+    );
   }
 
   const handleBarCodeScanned = ({ type, data }) => {
@@ -45,9 +62,15 @@ const ModalCamera = ({ show, setShow }) => {
       <View style={{ flex: 1, width: "100%" }}>
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-          type="back"
+          type={cameraDir}
           style={StyleSheet.absoluteFillObject}
         />
+        <Pressable
+          style={{ bottom: 0, right: 0, position: "absolute" }}
+          onPress={() => setCameraDir(cameraDir == "front" ? "back" : "front")}
+        >
+          <Ionicons name="camera-reverse" size={40} />
+        </Pressable>
         {scanned && <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />}
       </View>
       <Pressable
