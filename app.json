@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "platforms": ["ios", "android", "web"],
     "icon": "./src/assets/icon.png",
-    "//plugins": ["react-native-nfc-manager"],
+    "plugins": ["react-native-nfc-manager"],
     "ios": {
       "bundleIdentifier": "com.man1attack.myErganiReader"
     },

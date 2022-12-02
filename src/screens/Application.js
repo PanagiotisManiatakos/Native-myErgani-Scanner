@@ -1,34 +1,50 @@
-import { ImageBackground, Pressable, StyleSheet, Text, View, Button } from "react-native";
-import React, { useState } from "react";
-import ModalCamera from "../components/ui/ModalCamera";
+import { ImageBackground, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import ModalCamera from "../components/modals/ModalCamera";
 import SettingsIcon from "../components/SettingsIcon";
 import { ReduxContext } from "../Context";
-// import NfcManager, { NfcTech } from "react-native-nfc-manager";
+import NfcManager, { NfcTech } from "react-native-nfc-manager";
 const back = require("../assets/back.svg");
 
 const Application = () => {
   const [show, setShow] = useState(false);
   const { scan } = React.useContext(ReduxContext);
+  const [hasNfc, setHasNFC] = useState(null);
 
   const handleClick = async () => {
     if (scan === "QR") {
       setShow(true);
     } else {
-      // NfcManager.start();
-      // try {
-      //   // register for the NFC tag with NDEF in it
-      //   await NfcManager.requestTechnology(NfcTech.Ndef);
-      //   // the resolved tag object will contain `ndefMessage` property
-      //   const tag = await NfcManager.getTag();
-      //   console.warn("Tag found", tag);
-      // } catch (ex) {
-      //   console.warn("Oops!", ex);
-      // } finally {
-      //   // stop the nfc scanning
-      //   NfcManager.cancelTechnologyRequest();
-      // }
+      try {
+        // register for the NFC tag with NDEF in it
+        console.log("prin apo request tecnhology");
+        await NfcManager.requestTechnology(NfcTech.Ndef);
+        console.log("meta apo request tecnhology");
+        // the resolved tag object will contain `ndefMessage` property
+        const tag = await NfcManager.getTag();
+        console.log("meta");
+        console.log("Tag found", tag);
+      } catch (ex) {
+        console.warn(ex);
+      } finally {
+        // stop the nfc scanning
+        NfcManager.cancelTechnologyRequest();
+      }
     }
   };
+
+  useEffect(() => {
+    const checkIsSupported = async () => {
+      const deviceIsSupported = await NfcManager.isSupported();
+
+      setHasNFC(deviceIsSupported);
+      if (deviceIsSupported && scan === "NFC") {
+        await NfcManager.start();
+      }
+    };
+
+    checkIsSupported();
+  }, []);
 
   return (
     <View className="flex-1">

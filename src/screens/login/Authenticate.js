@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#aaa",
   },
-  dropdownBtnTxtStyle: { color: "#FFF", marginStart: 0, textAlign: "start", fontWeight: "bold" },
+  dropdownBtnTxtStyle: { color: "#FFF", marginStart: 0, textAlign: "left", fontWeight: "bold" },
   dropdownDropdownStyle: { backgroundColor: "#444", borderBottomLeftRadius: 12, borderBottomRightRadius: 12 },
   dropdownRowStyle: { backgroundColor: "#444", borderBottomColor: "#C5C5C5" },
   dropdownRowTxtStyle: { color: "#FFF", textAlign: "center", fontWeight: "bold" },
