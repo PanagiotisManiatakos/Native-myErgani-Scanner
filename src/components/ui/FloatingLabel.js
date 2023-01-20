@@ -61,7 +61,7 @@ class FloatingLabel extends Component {
           blurOnSubmit
           underlineColorAndroid="transparent"
           autoCapitalize="none"
-          clearButtonMode="always"
+          clearButtonMode="while-editing"
         />
       </View>
       //   {this.props.value !== "" && (

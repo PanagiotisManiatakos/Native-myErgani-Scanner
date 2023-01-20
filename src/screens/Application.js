@@ -18,7 +18,7 @@ const Application = () => {
       try {
         // register for the NFC tag with NDEF in it
         console.log("prin apo request tecnhology");
-        await NfcManager.requestTechnology(NfcTech.Ndef);
+        await NfcManager.requestTechnology(NfcTech.IsoDep);
         console.log("meta apo request tecnhology");
         // the resolved tag object will contain `ndefMessage` property
         const tag = await NfcManager.getTag();

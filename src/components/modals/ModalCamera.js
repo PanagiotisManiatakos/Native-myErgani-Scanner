@@ -51,7 +51,8 @@ const ModalCamera = ({ show, setShow }) => {
   const handleBarCodeScanned = ({ type, data }) => {
     playSound();
     setScanned(true);
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    setShow(false);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
   return (
     <Dialog
@@ -71,7 +72,7 @@ const ModalCamera = ({ show, setShow }) => {
         >
           <Ionicons name="camera-reverse" size={40} />
         </Pressable>
-        {scanned && <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />}
+        {/* {scanned && <Button title={"Tap to Scan Again"} onPress={() => setScanned(false)} />} */}
       </View>
       <Pressable
         className="focus:outline-none bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 rounded-lg px-5 py-2.5 mt-5 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
